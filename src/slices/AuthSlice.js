@@ -5,7 +5,7 @@ export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (credentials, thunkAPI) => {
     try {
-      const response = await fetch('https://localhost:3001/api/v1/user/login', {
+      const response = await fetch('http://localhost:3001/api/v1/user/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
@@ -15,8 +15,10 @@ export const loginUser = createAsyncThunk(
         return thunkAPI.rejectWithValue(errorData.message || 'Erreur de connexion');
       }
       const data = await response.json();
-      sessionStorage.setItem('token', data.token);
-      return data; // { token: "..." }
+      // Récupère le token à l'intérieur de body
+      const token = data.body.token;
+      sessionStorage.setItem('token', token);
+      return { token }; // On retourne un objet avec la clé token
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }
@@ -31,7 +33,7 @@ export const fetchUserProfile = createAsyncThunk(
     const state = thunkAPI.getState();
     const token = state.auth.token;
     try {
-      const response = await fetch('https://localhost:3001/api/v1/user/profile', {
+      const response = await fetch('http://localhost:3001/api/v1/user/profile', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -40,6 +42,7 @@ export const fetchUserProfile = createAsyncThunk(
       });
       if (!response.ok) {
         const errorData = await response.json();
+        console.log('Réponse API login:', data);
         return thunkAPI.rejectWithValue(errorData.message);
       }
       const data = await response.json();

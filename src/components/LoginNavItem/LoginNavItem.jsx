@@ -1,7 +1,43 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../../slices/AuthSlice'; 
 import './LoginNavItem.scss';
 
 function LoginNavItem() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { isAuthenticated, user } = useSelector(state => state.auth);
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/Signin');
+  };
+
+  if (isAuthenticated && user) {
+    return (
+      <div className="main-nav-item user-info">
+        <i className="fa fa-user-circle"></i>
+        <span>
+          {user.firstName} {user.lastName}
+        </span>
+        <button
+          className="logout-btn"
+          onClick={handleLogout}
+          style={{
+            background: 'none',
+            border: 'none',
+            color: 'inherit',
+            cursor: 'pointer',
+            marginLeft: '1rem'
+          }}
+        >
+          <i className="fa fa-sign-out"></i>
+          Logout
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div>
       <Link className="main-nav-item" to="/Signin">
