@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { UpdateUserName } from '../redux/usersSlice';
+import { updateUserName } from '../../slices/UpdateUsername';
 
 const EditUsernameForm = () => {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const EditUsernameForm = () => {
     setStatus('loading');
     setError(null);
     try {
-      await dispatch(UpdateUserName({ userId: currentUserId, userName })).unwrap();
+      await dispatch(updateUserName({ userId: currentUserId, userName })).unwrap();
       setStatus('success');
     } catch (err) {
       setError(err.message || 'Erreur inconnue');
