@@ -7,9 +7,16 @@ import iconMoney from "../../assets/icon-money.webp";
 import iconSecurity from "../../assets/icon-security.webp";
 import Footer from "../../components/Footer/Footer";
 import FullWidthDivider from "../../components/FullWidthDivider/FullWidthDivider";
-
+import { useSelector } from 'react-redux';
+import { Navigate } from 'react-router-dom';
 
 const Home = () => {
+ const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
+  // Redirection immédiate si déjà connecté
+  if (isAuthenticated) {
+    return <Navigate to="/user" replace />;
+  }
   return (
     <div>
       <Header />

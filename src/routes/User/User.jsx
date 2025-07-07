@@ -5,16 +5,23 @@ import "./User.scss";
 import Title from "../../components/Title/Title";
 import Text from "../../components/Text/Text";
 import H3 from "../../components/H3/H3";
+import { useSelector } from 'react-redux';
+import EditUsernameForm from "../../components/EditUsernameForm/EditUsernameForm";
 
-const User = () => (
+const User = () => {
+   const user = useSelector(state => state.auth.user);
+
+  if (!user) return null;
+  return (
   <div>
     <Header />
     <main className="main bg-dark">
       <div className="header">
         <Title text="Welcome back" />
-        <Title text="Thony Jarvis" />
+        <Title text={`${user.firstName} ${user.lastName}`} />
+        <Title text={`${user.userName} ${user.userName}`} />
         <Button className="edit-button" >
-          Edit Name
+          Edit infos
         </Button>
       </div>
       <section className="account">
@@ -57,5 +64,5 @@ const User = () => (
     <Footer />
   </div>
 );
-
+};
 export default User;

@@ -54,11 +54,11 @@ export const fetchUserProfile = createAsyncThunk(
 );
 
 const initialState = {
-  token: null,
+  token: sessionStorage.getItem('token') || null,
   user: null,
   loading: false,
   error: null,
-  isAuthenticated: false,
+  isAuthenticated: !!sessionStorage.getItem('token'),
   profileLoading: false,
   profileError: null,
 };
@@ -73,6 +73,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.error = null;
       state.profileError = null;
+      sessionStorage.removeItem('token');
     },
   },
   extraReducers: (builder) => {
