@@ -1,29 +1,34 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { fetchUserProfile } from "./UserSlice";
 // Thunk asynchrone pour modifier le username
 export const updateUserName = createAsyncThunk(
-  'users/updateUserName',
-  async ({ userId, userName }) => {
-    const response = await fetch('http://localhost:3001/api/v1/user/profile', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+  "users/updateUserName",
+  async ({ userId, userName }, thunkAPI) => {
+    const token = sessionStorage.getItem("token");
+    const response = await fetch("http://localhost:3001/api/v1/user/profile", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token && { Authorization: `Bearer ${token}` }),
+      },
       body: JSON.stringify({ userName }),
     });
+    const data = await response.json();
     if (!response.ok) {
-      const data = await response.json();
-      throw new Error(data.message || 'Erreur serveur');
+      throw new Error(data.message || "Erreur serveur");
     }
-    return { userId, userName };
+    await thunkAPI.dispatch(fetchUserProfile());
+    return { userId, userName: data.body.userName || userName };
   }
 );
 
 const usersSlice = createSlice({
-  name: 'users',
+  name: "users",
   initialState: {
     byId: {},
     allIds: [],
     currentUserId: null,
-    updateStatus: 'idle',
+    updateStatus: "idle",
     updateError: null,
   },
   reducers: {
@@ -35,23 +40,18 @@ const usersSlice = createSlice({
       state.byId[user.id] = user;
       if (!state.allIds.includes(user.id)) state.allIds.push(user.id);
     },
-    
   },
   extraReducers: (builder) => {
     builder
       .addCase(updateUserName.pending, (state) => {
-        state.updateStatus = 'loading';
+        state.updateStatus = "loading";
         state.updateError = null;
       })
-      .addCase(updateUserName.fulfilled, (state, action) => {
-        const { userId, userName } = action.payload;
-        if (state.byId[userId]) {
-          state.byId[userId].userName = userName;
-        }
-        state.updateStatus = 'succeeded';
+      .addCase(updateUserName.fulfilled, (state) => {
+        state.updateStatus = "succeeded";
       })
       .addCase(updateUserName.rejected, (state, action) => {
-        state.updateStatus = 'failed';
+        state.updateStatus = "failed";
         state.updateError = action.error.message;
       });
   },

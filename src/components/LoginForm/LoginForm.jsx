@@ -2,13 +2,13 @@ import { useState,useEffect  } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginForm.scss'
 import { useDispatch, useSelector } from 'react-redux';
-import { loginUser,fetchUserProfile } from '../../slices/AuthSlice';
+import { loginUser,fetchUserProfile } from '../../slices/UserSlice';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
-
+   const [errorMessage, setErrorMessage] = useState(""); 
    const dispatch = useDispatch();
   const navigate = useNavigate()
   const { loading, error, isAuthenticated } = useSelector(state => state.auth);
@@ -22,13 +22,14 @@ const LoginForm = () => {
     e.preventDefault();
     // Dispatch du thunk loginUser
     try {
+      setErrorMessage("");
       await dispatch(loginUser({ email, password })).unwrap();
       // Optionnel : va chercher le profil utilisateur après connexion
       await dispatch(fetchUserProfile()).unwrap();
       // Redirection vers /user si login réussi
       navigate('/user');
     } catch (err) {
-      // L'erreur est déjà gérée dans le store, tu peux éventuellement afficher un toast ici
+      setErrorMessage(err?.message || "Erreur lors de la connexion");
     }
   };
  return (
@@ -63,7 +64,7 @@ const LoginForm = () => {
     <button className="sign-in-button" type="submit" disabled={loading}>
       {loading ? 'Connexion...' : 'Sign In'}
     </button>
-    {error && <div className="error-message">{error}</div>}
+    {errorMessage  && <div className="error-message">{error}</div>}
   </form>
 );
 

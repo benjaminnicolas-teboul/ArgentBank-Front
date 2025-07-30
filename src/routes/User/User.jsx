@@ -1,6 +1,7 @@
 import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import Button from "../../components/Button/Button";
+import React, { useState } from "react";
 import "./User.scss";
 import Title from "../../components/Title/Title";
 import Text from "../../components/Text/Text";
@@ -10,8 +11,10 @@ import EditUsernameForm from "../../components/EditUsernameForm/EditUsernameForm
 
 const User = () => {
    const user = useSelector(state => state.auth.user);
-
+    const [isEditing, setIsEditing] = useState(false);
   if (!user) return null;
+
+
   return (
   <div>
     <Header />
@@ -19,10 +22,19 @@ const User = () => {
       <div className="header">
         <Title text="Welcome back" />
         <Title text={`${user.firstName} ${user.lastName}`} />
-        <Title text={`${user.userName} ${user.userName}`} />
-        <Button className="edit-button" >
-          Edit infos
-        </Button>
+           {!isEditing ? (
+            <>
+              <Title text={user.userName} />
+              <Button className="edit-button" onClick={() => setIsEditing(true)}>
+                Edit user infos
+              </Button>
+            </>
+          ) : (
+            <>
+              <EditUsernameForm onSaveSuccess={() => setIsEditing(false)} onCancel={() => setIsEditing(false)} />
+              
+            </>
+          )}
       </div>
       <section className="account">
         <div className="account-content-wrapper">

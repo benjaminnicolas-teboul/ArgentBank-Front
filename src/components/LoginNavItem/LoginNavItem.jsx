@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from '../../slices/AuthSlice'; 
+import { logout } from '../../slices/UserSlice'; 
 import './LoginNavItem.scss';
 
 function LoginNavItem() {
