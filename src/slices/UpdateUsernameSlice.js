@@ -18,7 +18,8 @@ export const updateUserName = createAsyncThunk(
       throw new Error(data.message || "Erreur serveur");
     }
     await thunkAPI.dispatch(fetchUserProfile());
-    return { userId, userName: data.body.userName || userName };
+    await thunkAPI.dispatch(setCurrentUserId(data.body.id));
+    return { userId: data.body.id || userId, userName: data.body.userName || userName };
   }
 );
 
@@ -38,6 +39,8 @@ const usersSlice = createSlice({
     setUser: (state, action) => {
       const user = action.payload;
       state.byId[user.id] = user;
+      
+      
       if (!state.allIds.includes(user.id)) state.allIds.push(user.id);
     },
   },
@@ -47,7 +50,15 @@ const usersSlice = createSlice({
         state.updateStatus = "loading";
         state.updateError = null;
       })
-      .addCase(updateUserName.fulfilled, (state) => {
+      .addCase(updateUserName.fulfilled, (state,action) => {
+         const { userId, userName } = action.payload;
+  if (userId && state.byId[userId]) {
+    state.byId[userId].userName = userName;
+  }
+  // Mettre éventuellement currentUserId si ce n'est pas fait ailleurs
+  if (userId) {
+    state.currentUserId = userId;
+  }
         state.updateStatus = "succeeded";
       })
       .addCase(updateUserName.rejected, (state, action) => {

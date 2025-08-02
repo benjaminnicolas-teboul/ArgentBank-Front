@@ -1,23 +1,25 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 //thunk login
 export const loginUser = createAsyncThunk(
-  'auth/loginUser',
+  "auth/loginUser",
   async (credentials, thunkAPI) => {
     try {
-      const response = await fetch('http://localhost:3001/api/v1/user/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("http://localhost:3001/api/v1/user/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(credentials),
       });
       if (!response.ok) {
         const errorData = await response.json();
-        return thunkAPI.rejectWithValue(errorData.message || 'Erreur de connexion');
+        return thunkAPI.rejectWithValue(
+          errorData.message || "Erreur de connexion"
+        );
       }
       const data = await response.json();
       // Récupère le token à l'intérieur de body
       const token = data.body.token;
-      sessionStorage.setItem('token', token);
+      sessionStorage.setItem("token", token);
       return { token }; // On retourne un objet avec la clé token
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -25,24 +27,25 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-
 //thunk recuperatio profil utilisateur
 export const fetchUserProfile = createAsyncThunk(
-  'auth/fetchUserProfile',
+  "auth/fetchUserProfile",
   async (_, thunkAPI) => {
     const state = thunkAPI.getState();
     const token = state.auth.token;
     try {
-      const response = await fetch('http://localhost:3001/api/v1/user/profile', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "http://localhost:3001/api/v1/user/profile",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (!response.ok) {
         const errorData = await response.json();
-        console.log('Réponse API login:', data);
         return thunkAPI.rejectWithValue(errorData.message);
       }
       const data = await response.json();
@@ -54,17 +57,17 @@ export const fetchUserProfile = createAsyncThunk(
 );
 
 const initialState = {
-  token: sessionStorage.getItem('token') || null,
+  token: sessionStorage.getItem("token") || null,
   user: null,
   loading: false,
   error: null,
-  isAuthenticated: !!sessionStorage.getItem('token'),
+  isAuthenticated: !!sessionStorage.getItem("token"),
   profileLoading: false,
   profileError: null,
 };
 
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     logout: (state) => {
@@ -73,7 +76,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.error = null;
       state.profileError = null;
-      sessionStorage.removeItem('token');
+      sessionStorage.removeItem("token");
     },
   },
   extraReducers: (builder) => {
@@ -82,6 +85,7 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
+
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.token = action.payload.token;
@@ -89,7 +93,7 @@ const authSlice = createSlice({
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload || 'Erreur de connexion';
+        state.error = action.payload || "Erreur de connexion";
       })
       .addCase(fetchUserProfile.pending, (state) => {
         state.profileLoading = true;
@@ -101,7 +105,8 @@ const authSlice = createSlice({
       })
       .addCase(fetchUserProfile.rejected, (state, action) => {
         state.profileLoading = false;
-        state.profileError = action.payload || 'Erreur de récupération du profil';
+        state.profileError =
+          action.payload || "Erreur de récupération du profil";
       });
   },
 });
