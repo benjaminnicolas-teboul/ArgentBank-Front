@@ -15,7 +15,7 @@ const Home = () => {
 
   // Redirection immédiate si déjà connecté
   if (isAuthenticated) {
-    if(sessionStorage != null){
+    if(sessionStorage.getItem("token") != null){
       console.log("hllo");
     return <Navigate to="/user" replace />;
       }

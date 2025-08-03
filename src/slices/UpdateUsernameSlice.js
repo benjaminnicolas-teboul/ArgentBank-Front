@@ -55,7 +55,7 @@ const usersSlice = createSlice({
   if (userId && state.byId[userId]) {
     state.byId[userId].userName = userName;
   }
-  // Mettre éventuellement currentUserId si ce n'est pas fait ailleurs
+  
   if (userId) {
     state.currentUserId = userId;
   }
