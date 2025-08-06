@@ -11,23 +11,25 @@ const LoginForm = () => {
    const [errorMessage, setErrorMessage] = useState(""); 
    const dispatch = useDispatch();
   const navigate = useNavigate()
-  const { loading, error, isAuthenticated } = useSelector(state => state.auth);
-  useEffect(() => {
-    if (isAuthenticated) {
-      dispatch(fetchUserProfile());
-      navigate('/user');
-    }
-  }, [isAuthenticated, dispatch, navigate]);
+  const { loading,  isAuthenticated, profileLoading, profileLoaded, profileError } = useSelector(state => state.auth);
+useEffect(() => {
+  if (isAuthenticated && !profileLoaded && !profileLoading) {
+    dispatch(fetchUserProfile());
+  }
+}, [isAuthenticated, profileLoaded, profileLoading, dispatch]);
+
+useEffect(() => {
+  if (profileLoaded) {
+    navigate('/user');
+  }
+}, [profileLoaded, navigate]);
+
    const handleSubmit = async (e) => {
     e.preventDefault();
     // Dispatch du thunk loginUser
     try {
       setErrorMessage("");
       await dispatch(loginUser({ email, password })).unwrap();
-      // Optionnel : va chercher le profil utilisateur après connexion
-      await dispatch(fetchUserProfile()).unwrap();
-      // Redirection vers /user si login réussi
-      navigate('/user');
     } catch (err) {
       setErrorMessage(err?.message || "Erreur lors de la connexion");
     }
@@ -64,7 +66,9 @@ const LoginForm = () => {
     <button className="sign-in-button" type="submit" disabled={loading}>
       {loading ? 'Connexion...' : 'Sign In'}
     </button>
-    {errorMessage  && <div className="error-message">{error}</div>}
+    {errorMessage  && <div className="error-message">{errorMessage}</div>}
+    {profileError && (<div className="error-message">  {profileError}
+      <button type="button" onClick={() => dispatch(fetchUserProfile())}></button></div>)}
   </form>
 );
 

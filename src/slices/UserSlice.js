@@ -64,6 +64,7 @@ const initialState = {
   isAuthenticated: !!sessionStorage.getItem("token"),
   profileLoading: false,
   profileError: null,
+  profileLoaded: false,
 };
 
 const authSlice = createSlice({
@@ -90,6 +91,7 @@ const authSlice = createSlice({
         state.loading = false;
         state.token = action.payload.token;
         state.isAuthenticated = true;
+        state.profileLoaded = false; 
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.loading = false;
@@ -101,6 +103,7 @@ const authSlice = createSlice({
       })
       .addCase(fetchUserProfile.fulfilled, (state, action) => {
         state.profileLoading = false;
+        state.profileLoaded = true; 
         state.user = action.payload.body;
       })
       .addCase(fetchUserProfile.rejected, (state, action) => {

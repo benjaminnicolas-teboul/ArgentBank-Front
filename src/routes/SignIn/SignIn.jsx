@@ -2,17 +2,13 @@ import Footer from "../../components/Footer/Footer";
 import Header from "../../components/Header/Header";
 import './Sign-in.scss';
 import LoginForm from "../../components/LoginForm/LoginForm";
-import { useSelector } from 'react-redux';
+
 import { Navigate } from 'react-router-dom';
 
 const SignIn = () => {
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-  const user = useSelector(state => state.auth.user);
+  
 
-  // Redirection immédiate si déjà connecté et profil chargé
-  if (isAuthenticated && user) {
-    return <Navigate to="/user" replace />;
-  }
+ 
 
   return (
     <div>

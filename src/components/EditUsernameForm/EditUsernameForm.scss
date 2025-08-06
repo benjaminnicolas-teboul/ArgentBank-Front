@@ -5,3 +5,16 @@
   font-weight: bold;
   padding: 10px;
 }
+
+form{
+  label{
+    padding-right:5px;
+  }
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+  input{
+      
+     padding: 10px; 
+  }
+}
