@@ -53,7 +53,7 @@ const EditUsernameForm = ({ onSaveSuccess, onCancel }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className='EditUSernamForm'>
       <label htmlFor="username-input">User name :</label>
       <input
         id="username-input"
