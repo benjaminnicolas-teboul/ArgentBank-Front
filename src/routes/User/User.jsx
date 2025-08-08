@@ -12,8 +12,7 @@ import EditUsernameForm from "../../components/EditUsernameForm/EditUsernameForm
 const User = () => {
    const user = useSelector(state => state.auth.user);
     const [isEditing, setIsEditing] = useState(false);
-  if (!user) return null;
-
+  
 
   return (
   <div>

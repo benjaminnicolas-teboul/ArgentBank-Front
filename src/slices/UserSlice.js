@@ -77,6 +77,8 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.error = null;
       state.profileError = null;
+       state.profileLoaded = false;       
+  state.profileLoading = false; 
       sessionStorage.removeItem("token");
     },
   },

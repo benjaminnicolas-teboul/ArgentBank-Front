@@ -1,5 +1,4 @@
-import { useState,useEffect  } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import './LoginForm.scss'
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser,fetchUserProfile } from '../../slices/UserSlice';
@@ -10,19 +9,8 @@ const LoginForm = () => {
   const [rememberMe, setRememberMe] = useState(false);
    const [errorMessage, setErrorMessage] = useState(""); 
    const dispatch = useDispatch();
-  const navigate = useNavigate()
-  const { loading,  isAuthenticated, profileLoading, profileLoaded, profileError } = useSelector(state => state.auth);
-useEffect(() => {
-  if (isAuthenticated && !profileLoaded && !profileLoading) {
-    dispatch(fetchUserProfile());
-  }
-}, [isAuthenticated, profileLoaded, profileLoading, dispatch]);
+  const { loading, profileError } = useSelector(state => state.auth);
 
-useEffect(() => {
-  if (profileLoaded) {
-    navigate('/user');
-  }
-}, [profileLoaded, navigate]);
 
    const handleSubmit = async (e) => {
     e.preventDefault();

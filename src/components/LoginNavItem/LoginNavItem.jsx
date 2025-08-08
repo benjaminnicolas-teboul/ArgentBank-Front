@@ -1,16 +1,14 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../slices/UserSlice'; 
 import './LoginNavItem.scss';
 
 function LoginNavItem() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { isAuthenticated, user } = useSelector(state => state.auth);
 
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate('/Signin');
+  const handleLogout =  () => {
+     dispatch(logout());
   };
 
   if (isAuthenticated && user) {
