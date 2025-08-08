@@ -12,7 +12,6 @@ const PublicRoute = ({ children }) => {
   }
    return <Navigate to="/user" replace />;
  }
-    console.log("Utilisateur non connecté, affiche la page publique");
   return children;
 };
 
