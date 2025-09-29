@@ -1,19 +1,3 @@
-# lounch project
+Le projet ArgentBank est une application web en React avec Redux permettant aux utilisateurs de gérer leur authentification et leur identité. La plateforme offre une page d'accueil, un système de connexion sécurisé et une page de profil accessible uniquement après authentification. Les utilisateurs peuvent modifier leur pseudo mais pas leur nom ni leur prénom. L’architecture Redux garantit une gestion centralisée et évolutive de l’état de l’application, idéale pour les futures fonctionnalités de transactions. Le respect du Green Code est mis en avant : optimisation des images et mise en place de composants réutilisables.
 
-type nvm use 20.19.0 to use right version of node
-npm run dev
-
-
-
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+El proyecto ArgentBank es una aplicación web en React y Redux que permite a los usuarios gestionar su autenticación y su identidad. La plataforma ofrece una página de inicio, un sistema de inicio de sesión seguro y una página de perfil accesible solo después de la autenticación. Los usuarios pueden modificar su apodo, pero no su nombre ni su apellido. La arquitectura de Redux asegura una gestión centralizada y escalable del estado de la aplicación, adecuada para futuras funcionalidades de transacciones. Se destaca la aplicación de buenas prácticas conocidas como Green Code: optimización de imágenes y uso de componentes reutilizables.
